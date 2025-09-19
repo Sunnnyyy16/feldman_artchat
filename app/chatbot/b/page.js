@@ -1,9 +1,9 @@
 'use client';
-
-import { useRef, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { saveHistory } from '../../lib/db';
 import styles from '../chatbot.module.css';
 
-export default function Home() {
+export default function ChatbotB() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -17,9 +17,9 @@ export default function Home() {
 
   const send = async (e) => {
     e.preventDefault();
-    const userMsg = { role: 'user', content: input.trim() };
-    if (!userMsg.content) return;
+    if (!input.trim()) return;
 
+    const userMsg = { role: 'user', content: input.trim() };
     setMessages((prev) => [...prev, userMsg, { role: 'assistant', content: '' }]);
     setInput('');
     setLoading(true);
@@ -29,7 +29,7 @@ export default function Home() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: [...messages.filter(m => m.role !== 'assistant' || m.content !== ''), userMsg],
+          messages: [...messages.filter((m) => m.role !== 'assistant' || m.content !== ''), userMsg],
         }),
       });
 
@@ -37,18 +37,19 @@ export default function Home() {
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
-
       let acc = '';
+
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
         acc += decoder.decode(value, { stream: true });
+
         setMessages((prev) => {
           const copy = [...prev];
-          const lastIdx = copy.length - 1;
-          copy[lastIdx] = { role: 'assistant', content: acc };
+          copy[copy.length - 1] = { role: 'assistant', content: acc };
           return copy;
         });
+
         listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' });
       }
     } catch (err) {
@@ -61,15 +62,23 @@ export default function Home() {
     }
   };
 
+  // ⬇️ "채팅 기록 저장" 버튼 동작
+  const handleSave = async () => {
+    await saveHistory('B타입 대화', messages, 'b');
+    alert('채팅 기록이 저장되었습니다 ✅');
+  };
+
   return (
-    <main className={styles.container}>
-      <h1 className={styles.title}>B: Feldman Critique Chatbot</h1>
+    <main className={styles.chat}>
+      <h1 className={styles.title}>B타입 챗봇</h1>
 
       <div ref={listRef} className={styles.chatBox}>
         {messages.map((m, i) => (
           <div
             key={i}
-            className={`${styles.messageRow} ${m.role === 'user' ? styles.right : styles.left}`}
+            className={`${styles.messageRow} ${
+              m.role === 'user' ? styles.right : styles.left
+            }`}
           >
             <div className={m.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant}>
               {m.content}
@@ -82,17 +91,23 @@ export default function Home() {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="작품에 보이는 것들을 먼저 ‘설명’해 주세요."
+          placeholder="작품에 보이는 것들을 먼저 설명해 주세요."
           className={styles.input}
         />
-        <button disabled={loading} className={`${styles.button} ${loading ? styles.disabled : ''}`}>
+        <button
+          disabled={loading}
+          className={`${styles.button} ${loading ? styles.disabled : ''}`}
+        >
           {loading ? '생성 중…' : '보내기'}
         </button>
       </form>
 
-      <p className={styles.tip}>
-        Tip: 1) 설명 → 2) 분석 → 3) 해석 → 4) 판단 순서로 짧게 대답하면 챗봇이 다음 질문을 이어가요.
-      </p>
+      {/* 채팅이 끝났다고 판단되면 눌러서 저장 */}
+      {messages.length > 2 && (
+        <button onClick={handleSave} className={styles.button}>
+          채팅 기록 저장
+        </button>
+      )}
     </main>
   );
 }

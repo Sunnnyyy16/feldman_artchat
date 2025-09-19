@@ -1,68 +1,85 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { getAllHistories, updateSessionTitle, createSession } from '../lib/db';
 import styles from '../chatbot/chatbot.module.css';
-import Link from 'next/link';
-import { getAllSessions, createSession, updateSessionTitle } from '../lib/sessionDB';
+import { useRouter } from 'next/navigation';
 
-export default function Sidebar({ type }) {
-  const [sessions, setSessions] = useState([]);
+export default function Sidebar() {
+  const [histories, setHistories] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [tempTitle, setTempTitle] = useState('');
+  const router = useRouter();
+
+  const loadHistories = async () => {
+    const list = await getAllHistories();
+    setHistories(list);
+  };
 
   useEffect(() => {
-    loadSessions();
-  }, [type]);
+    loadHistories();
 
-  const loadSessions = async () => {
-    setSessions(await getAllSessions(type));
+    // "채팅 기록 저장" 이벤트 감지
+    const handler = () => loadHistories();
+    window.addEventListener('history-saved', handler);
+
+    return () => {
+      window.removeEventListener('history-saved', handler);
+    };
+  }, []);
+
+  const handleClick = (h) => {
+    // 저장된 히스토리 불러오기만 (읽기 전용)
+    router.push(`/chatbot/${h.type}?history=${h.id}`);
   };
 
-  const handleNewSession = async () => {
-    await createSession(type);
-    loadSessions();
+  const handleEdit = (h) => {
+    setEditingId(h.id);
+    setTempTitle(h.title);
   };
 
-  const handleEdit = (session) => {
-    setEditingId(session.id);
-    setTempTitle(session.title);
-  };
-
-  const handleSave = async (id) => {
+  const handleSaveTitle = async (id) => {
     if (tempTitle.trim()) {
       await updateSessionTitle(id, tempTitle.trim());
-      await loadSessions();
+      await loadHistories();
     }
     setEditingId(null);
+  };
+
+  const handleNewSession = async (type) => {
+    // 새 채팅 시작 (빈 기록 저장)
+    await createSession(type);
+    await loadHistories();
   };
 
   return (
     <div className={styles.sidebarWrapper}>
       <div className={styles.sidebarHeader}>
         <h2 className={styles.sidebarTitle}>Chat history</h2>
-        <button onClick={handleNewSession} className={styles.newSessionBtn}>
+        {/* 새 채팅 시작 버튼 */}
+        <button onClick={() => handleNewSession('a')} className={styles.newSessionBtn}>
           +
         </button>
       </div>
 
       <div className={styles.sessionList}>
-        {sessions.map((s) => (
-          <div key={s.id} className={styles.sessionItem}>
-            {editingId === s.id ? (
+        {histories.map((h) => (
+          <div key={h.id} className={styles.sessionItem}>
+            {editingId === h.id ? (
               <input
                 value={tempTitle}
                 onChange={(e) => setTempTitle(e.target.value)}
-                onBlur={() => handleSave(s.id)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSave(s.id)}
+                onBlur={() => handleSaveTitle(h.id)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSaveTitle(h.id)}
                 autoFocus
                 className={styles.sessionInput}
               />
             ) : (
-              <Link href={`/chatbot/${type}?session=${s.id}`} className={styles.sessionLink}>
-                {s.title}
-              </Link>
+              <span onClick={() => handleClick(h)} className={styles.sessionLink}>
+                {h.title}
+              </span>
             )}
-            {editingId !== s.id && (
-              <button onClick={() => handleEdit(s)} className={styles.editBtn}>
+            {editingId !== h.id && (
+              <button onClick={() => handleEdit(h)} className={styles.editBtn}>
                 ✏️
               </button>
             )}

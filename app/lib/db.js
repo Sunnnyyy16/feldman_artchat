@@ -2,46 +2,51 @@
 import { openDB } from 'idb';
 
 const DB_NAME = 'feldman_chat_db';
-const STORE = 'messages';
+const STORE = 'histories';
 
 export async function getDB() {
   return openDB(DB_NAME, 1, {
     upgrade(db) {
       if (!db.objectStoreNames.contains(STORE)) {
-        // keyPath = auto id, 인덱스: userId로 조회
-        const store = db.createObjectStore(STORE, { keyPath: 'id', autoIncrement: true });
-        store.createIndex('userId', 'userId', { unique: false });
+        db.createObjectStore(STORE, { keyPath: 'id', autoIncrement: true });
       }
     },
   });
 }
 
-// 사용자 전체 메시지 기록 가져오기 (오래된 순)
-export async function getAllMessagesByUser(userId) {
+// 새 세션 생성
+export async function createSession(type) {
   const db = await getDB();
-  const tx = db.transaction(STORE, 'readonly');
-  const index = tx.store.index('userId');
-  const rows = await index.getAll(userId);
-  await tx.done;
-  // rows는 { id, userId, role, content, createdAt } 형태의 리스트
-  // 시간순 정렬
-  return rows.sort((a, b) => a.createdAt - b.createdAt);
+  const now = new Date().toLocaleString();
+  await db.add(STORE, { title: `새 ${type.toUpperCase()} 대화 (${now})`, messages: [], type, createdAt: now });
 }
 
-export async function addMessage(userId, role, content) {
+// 채팅 제목 업데이트
+export async function updateSessionTitle(id, newTitle) {
   const db = await getDB();
-  const now = Date.now();
-  await db.add(STORE, { userId, role, content, createdAt: now });
-}
-
-export async function clearUserMessages(userId) {
-  const db = await getDB();
-  const tx = db.transaction(STORE, 'readwrite');
-  const index = tx.store.index('userId');
-  let cursor = await index.openCursor(userId);
-  while (cursor) {
-    await cursor.delete();
-    cursor = await cursor.continue();
+  const history = await db.get(STORE, id);
+  if (history) {
+    history.title = newTitle;
+    await db.put(STORE, history);
   }
-  await tx.done;
+}
+
+
+// 모든 히스토리 불러오기
+export async function getAllHistories() {
+  const db = await getDB();
+  return await db.getAll(STORE);
+}
+
+// 🔹 특정 히스토리 불러오기
+export async function getHistoryById(id) {
+  const db = await getDB();
+  return await db.get(STORE, id);
+}
+
+// 새 히스토리 저장
+export async function saveHistory(title, messages, type) {
+  const db = await getDB();
+  const now = new Date().toLocaleString();
+  await db.add(STORE, { title: title || `대화 (${now})`, messages, type, createdAt: now });
 }

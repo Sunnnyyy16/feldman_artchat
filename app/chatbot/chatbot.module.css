@@ -18,6 +18,15 @@
     overflow-y: auto;
   }
   
+  
+  
+  /* 채팅 UI (기존 page.module.css 스타일 반영) */
+  .title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  
   /* 오른쪽 채팅 영역 */
   .chat {
     flex: 1;
@@ -28,25 +37,29 @@
     overflow-y: auto;
     background: #faf6f2;
   }
-  
-  /* 채팅 UI (기존 page.module.css 스타일 반영) */
-  .title {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-  
+
   .chatBox {
     width: 100%;
-    max-width: 780px;
-    height: 60vh;
+    max-width: 1200px;
+    min-width: 560px;     /* 너무 좁아지는 것 방지 */
+    margin: 0 auto;
+    height: 75vh;
+    box-sizing: border-box;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 12px;
+    padding: 16px;
     overflow-y: auto;
     background: #ffffff;
   }
   
+  /* 모바일(좁은 화면)에서는 강제 최소폭 제거 */
+@media (max-width: 640px) {
+  .chatBox {
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
   .messageRow {
     display: flex;
     margin: 8px 0;
@@ -62,17 +75,19 @@
   
   .bubbleAssistant {
     max-width: 80%;
-    white-space: pre-wrap;
+    white-space: pre-wrap;   /* 줄바꿈 허용 */
+    word-break: break-word;  /* 긴 단어도 줄바꿈 */
     padding: 8px 12px;
     border-radius: 10px;
-    background: #f9f5f1;
-    color: #140e09;
+    background: #f1f5f9;
+    color: #111827;
     line-height: 1.5;
   }
-  
+
   .bubbleUser {
     max-width: 80%;
     white-space: pre-wrap;
+    word-break: break-word;  /* 🔹 여기 추가 */
     padding: 8px 12px;
     border-radius: 10px;
     background: #d49e8d;
