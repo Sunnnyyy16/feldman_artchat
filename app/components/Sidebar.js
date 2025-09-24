@@ -9,7 +9,7 @@ export default function Sidebar() {
   const [histories, setHistories] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [tempTitle, setTempTitle] = useState('');
-  const [open, setOpen] = useState(true); // 데스크탑 기본 open, 모바일은 media query로 조정 가능
+  const [open, setOpen] = useState(false); // ✅ 항상 토글로 관리
   const router = useRouter();
 
   const loadHistories = async () => {
@@ -26,7 +26,7 @@ export default function Sidebar() {
 
   const handleClick = (h) => {
     router.push(`/chatbot/${h.type}?history=${h.id}`);
-    if (window.innerWidth < 768) setOpen(false); // 모바일에서 눌렀을 때 자동 닫힘
+    setOpen(false); // ✅ 히스토리 클릭하면 자동 닫기
   };
 
   const handleEdit = (h) => {
@@ -49,22 +49,20 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* 상단 토글 버튼 (모바일용) */}
+      {/* 토글 버튼 */}
       <button
         className={styles.sidebarToggle}
         onClick={() => setOpen(!open)}
       >
-        ☰ Chat history
+        ☰
       </button>
 
-      {/* Sidebar 영역 */}
-      <div className={`${styles.sidebarWrapper} ${open ? styles.open : styles.closed}`}>
+      {/* Sidebar */}
+      <div className={`${styles.sidebarWrapper} ${open ? styles.open : ''}`}>
         <div className={styles.sidebarHeader}>
-          {/* 홈으로 가는 버튼 */}
           <Link href="/" className={styles.homeBtn}>
-            Feldman Chat
+            Feldman ArtChat
           </Link>
-
           <button
             onClick={() => handleNewSession('a')}
             className={styles.newSessionBtn}
