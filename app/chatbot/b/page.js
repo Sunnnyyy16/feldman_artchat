@@ -100,7 +100,35 @@ export default function ChatbotB() {
 
   const handleSave = async () => {
     await saveHistory('B타입 대화', messages, 'b');
-    alert('채팅 기록이 저장되었습니다 ✅');
+
+    // 🔹 TXT 파일 다운로드 기능 추가
+    const textContent = messages
+      .map((m) => {
+        if (Array.isArray(m.content)) {
+          // 텍스트+이미지 혼합 메시지
+          return m.content
+            .map((c) =>
+              c.type === 'text'
+                ? `[${m.role}] ${c.text}`
+                : `[${m.role}] [이미지 첨부: ${c.image_url.url.substring(0, 50)}...]`
+            )
+            .join('\n');
+        } else {
+          // 일반 텍스트 메시지
+          return `[${m.role}] ${m.content}`;
+        }
+      })
+      .join('\n\n');
+
+    const blob = new Blob([textContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'chat-history-b.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+
+    alert('채팅 기록이 저장되고, 파일이 다운로드되었습니다 ✅');
   };
 
   return (
@@ -114,9 +142,7 @@ export default function ChatbotB() {
         {messages.map((m, i) => (
           <div
             key={i}
-            className={`${styles.messageRow} ${
-              m.role === 'user' ? styles.right : styles.left
-            }`}
+            className={`${styles.messageRow} ${m.role === 'user' ? styles.right : styles.left}`}
           >
             {/* ✅ 혼합 메시지 처리 */}
             {Array.isArray(m.content) ? (
@@ -137,9 +163,7 @@ export default function ChatbotB() {
             ) : m.type === 'image' ? (
               <img src={m.content} alt="첨부 이미지" className={styles.chatImage} />
             ) : (
-              <div
-                className={m.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant}
-              >
+              <div className={m.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant}>
                 {m.content}
               </div>
             )}
