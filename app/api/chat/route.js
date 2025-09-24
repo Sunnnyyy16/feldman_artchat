@@ -23,11 +23,11 @@ Steps:
 
     // OpenAI Chat Completions 스트리밍 요청
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini", // 모델 선택
-      stream: true,         // 스트리밍 모드
+      model: "gpt-4o-mini", // Vision 지원 모델
+      stream: true,
       messages: [
         { role: "system", content: systemPrompt },
-        ...messages,
+        ...messages, // user 메시지: 텍스트 + image_url 모두 포함 가능
       ],
     });
 

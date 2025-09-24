@@ -258,3 +258,57 @@
 .saveBtnFixed:hover {
   background: #aa7a6c;
 }
+
+.chatImage {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.previewBox {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.previewImage {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.attachBtn {
+  padding: 0 12px;
+  border-radius: 8px;
+  border: none;
+  background: #d49e8d;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.attachBtn:hover {
+  background: #b97c6b;
+}
+
+.chatImage {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-top: 4px;
+}
+
+.previewBox {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.previewImage {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
