@@ -40,7 +40,7 @@
 
   .chatBox {
     width: 100%;
-    max-width: 1200px;
+    max-width: 900px;
     min-width: 560px;     /* 너무 좁아지는 것 방지 */
     margin: 0 auto;
     height: 75vh;
@@ -52,14 +52,6 @@
     background: #ffffff;
   }
   
-  /* 모바일(좁은 화면)에서는 강제 최소폭 제거 */
-@media (max-width: 640px) {
-  .chatBox {
-    min-width: 0;
-    max-width: 100%;
-  }
-}
-
   .messageRow {
     display: flex;
     margin: 8px 0;
@@ -80,7 +72,7 @@
     padding: 8px 12px;
     border-radius: 10px;
     background: #f1f5f9;
-    color: #111827;
+    color: #271c11;
     line-height: 1.5;
   }
 
@@ -112,8 +104,8 @@
   }
   
   .input:focus {
-    border-color: #60a5fa;
-    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
+    border-color: #97563f;
+    box-shadow: 0 0 0 3px rgba(250, 168, 96, 0.25);
   }
   
   .button {
@@ -136,15 +128,85 @@
     margin-top: 8px;
   }
 
+
+  .saveBtnFixed {
+    position: absolute;
+    top: 16px;     /* 상단 여백 */
+    right: 24px;   /* 오른쪽 여백 */
+    background: #683b2b;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 100; /* 다른 요소 위에 보이도록 */
+    /* transition: background 0.2s; */
+  }
+  
+  .saveBtnFixed:hover {
+    background: #aa7a6c;
+  }
+  
 /* 전체 사이드바 wrapper */
 .sidebarWrapper {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 12px;
-    background-color: #ded1bd; /* gray-900 */
-    color: #261610;
+  width: 16rem;
+  background-color: #ded1bd;
+  color: #261610;
+  height: 100vh;
+  padding: 16px;
+  position: fixed;   /* 모바일 Drawer처럼 */
+  top: 0;
+  left: 0;
+  transition: transform 0.3s ease;
+  z-index: 50;
+}
+
+/* 열림/닫힘 상태 */
+.open {
+  transform: translateX(0);
+}
+.closed {
+  transform: translateX(-100%);
+}
+
+/* 모바일에서 토글 버튼 */
+.sidebarToggle {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background: #261610;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  z-index: 60;
+  cursor: pointer;
+}
+
+/* Home 버튼 */
+.homeBtn {
+  background: #ded1bd;
+  color: #261610;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+/* 데스크탑일 때 항상 열려 있음 */
+@media (min-width: 768px) {
+  .sidebarWrapper {
+    position: relative;
+    transform: translateX(0) !important;
   }
+  .sidebarToggle {
+    display: none;
+  }
+}
   
   /* 상단 헤더 */
   .sidebarHeader {

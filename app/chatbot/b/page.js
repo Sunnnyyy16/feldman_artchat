@@ -69,9 +69,14 @@ export default function ChatbotB() {
   };
 
   return (
-    <main className={styles.chat}>
+    <main className={styles.chat} style={{ position: 'relative' }}>
       <h1 className={styles.title}>B타입 챗봇</h1>
-
+  
+      {/* ✅ 항상 오른쪽 상단에 보이는 버튼 */}
+      <button onClick={handleSave} className={styles.saveBtnFixed}>
+        채팅 기록 저장
+      </button>
+  
       <div ref={listRef} className={styles.chatBox}>
         {messages.map((m, i) => (
           <div
@@ -80,13 +85,15 @@ export default function ChatbotB() {
               m.role === 'user' ? styles.right : styles.left
             }`}
           >
-            <div className={m.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant}>
+            <div
+              className={m.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant}
+            >
               {m.content}
             </div>
           </div>
         ))}
       </div>
-
+  
       <form onSubmit={send} className={styles.form}>
         <input
           value={input}
@@ -101,13 +108,6 @@ export default function ChatbotB() {
           {loading ? '생성 중…' : '보내기'}
         </button>
       </form>
-
-      {/* 채팅이 끝났다고 판단되면 눌러서 저장 */}
-      {messages.length > 2 && (
-        <button onClick={handleSave} className={styles.button}>
-          채팅 기록 저장
-        </button>
-      )}
     </main>
-  );
+  );  
 }
