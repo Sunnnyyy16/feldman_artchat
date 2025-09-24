@@ -5,11 +5,11 @@ import { getHistoryById, saveHistory } from '../../lib/db';
 import styles from '../chatbot.module.css';
 
 const fixedFlow = [
-  "안녕하세요! Feldman 비평을 시작합니다. 작품을 한 문장으로 묘사해 주세요.",
+  "안녕하세요! 펠드만 비평(설명→분석→해석→판단)으로 감상을 이제부터 시작해볼게요. 가장 먼저 작품을 한 문장으로 묘사해 주세요.",
   "분석 단계입니다. 작품을 분석해 보세요.",
   "이제 해석 단계입니다. 작품을 해석해 보세요.",
   "마지막 단계! 답변을 바탕으로 판단해 보세요.",
-  "고생하셨습니다, 이제 챗봇 사용 경험에 대해 연구원의 질문에 따라 알려주시면 됩니다><"
+  "고생하셨습니다, 이제 챗봇 사용 경험에 대해 연구원의 질문에 따라 알려주시면 됩니다. "
 ];
 
 export default function ChatbotA() {
@@ -58,18 +58,32 @@ export default function ChatbotA() {
   };
 
   return (
-    <main className={styles.chat}>
+    <main className={styles.chat} style={{ position: 'relative' }}>
       <h1 className={styles.title}>A타입 챗봇</h1>
+  
+      {/* ✅ 항상 오른쪽 상단에 보이는 버튼 */}
+      <button onClick={handleSave} className={styles.saveBtnFixed}>
+        채팅 기록 저장
+      </button>
+  
       <div className={styles.chatBox}>
         {messages.map((m, i) => (
-          <div key={i} className={`${styles.messageRow} ${m.role === 'user' ? styles.right : styles.left}`}>
-            <div className={m.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant}>
+          <div
+            key={i}
+            className={`${styles.messageRow} ${
+              m.role === 'user' ? styles.right : styles.left
+            }`}
+          >
+            <div
+              className={m.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant}
+            >
               {m.content}
             </div>
           </div>
         ))}
       </div>
-
+  
+      {/* 기존 form 유지 */}
       {step < fixedFlow.length && (
         <form onSubmit={handleSend} className={styles.form}>
           <input
@@ -80,12 +94,6 @@ export default function ChatbotA() {
           />
           <button className={styles.button}>보내기</button>
         </form>
-      )}
-
-      {step >= fixedFlow.length && (
-        <button onClick={handleSave} className={styles.button}>
-          채팅 기록 저장
-        </button>
       )}
     </main>
   );
