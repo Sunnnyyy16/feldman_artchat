@@ -1,36 +1,32 @@
-/* 전체 레이아웃 */
+/* -------------------- 공통 레이아웃 -------------------- */
 .layout {
   display: flex;
-  flex-direction: row; /* 왼쪽-오른쪽 2컬럼 */
+  flex-direction: row;
   height: 100vh;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, 'Noto Sans KR', sans-serif;
   background: #faf6f2;
 }
 
 /* -------------------- 사이드바 -------------------- */
-
-/* 사이드바 기본 (닫힘 상태) */
 .sidebarWrapper {
   position: fixed;
   top: 0;
   left: 0;
-  width: 0;               /* ✅ 기본 닫힘 */
+  width: 0;
   height: 100vh;
   background-color: #ded1bd;
   color: #261610;
   overflow-x: hidden;
   transition: width 0.3s ease, padding 0.3s ease;
-  padding: 0;             /* 닫혔을 때 여백 제거 */
+  padding: 0;
   z-index: 50;
 }
 
-/* 열림 상태 */
 .open {
-  width: 16rem;           /* ✅ 토글 시 열림 */
+  width: 16rem;
   padding: 16px;
 }
 
-/* 토글 버튼 (모바일/데스크탑 공통) */
 .sidebarToggle {
   position: fixed;
   top: 10px;
@@ -45,12 +41,11 @@
   font-size: 18px;
 }
 
-/* 사이드바 상단 헤더 */
 .sidebarHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 40px; /* 토글 버튼과 간격 */
+  margin-top: 40px;
   margin-bottom: 12px;
   padding: 0 4px;
 }
@@ -79,7 +74,6 @@
   background-color: #683b2b;
 }
 
-/* 세션 리스트 */
 .sessionList {
   display: flex;
   flex-direction: column;
@@ -91,7 +85,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 12px;   /* ✅ 좌우 균등 */
+  padding: 8px 12px;
   border-radius: 6px;
   cursor: pointer;
 }
@@ -132,13 +126,6 @@
 }
 
 /* -------------------- 채팅 UI -------------------- */
-
-.title {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
 .chat {
   flex: 1;
   display: flex;
@@ -147,14 +134,22 @@
   padding: 24px;
   overflow-y: auto;
   background: #faf6f2;
+  box-sizing: border-box;
 }
 
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+/* ✅ 채팅 박스 */
 .chatBox {
   width: 100%;
   max-width: 900px;
-  min-width: 560px;
+  min-width: 280px; /* 모바일 대응 (기존 560px → 축소) */
   margin: 0 auto;
-  height: 75vh;
+  height: 70vh;
   box-sizing: border-box;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
@@ -163,6 +158,7 @@
   background: #ffffff;
 }
 
+/* 메시지 버블 */
 .messageRow {
   display: flex;
   margin: 8px 0;
@@ -176,34 +172,34 @@
   justify-content: flex-end;
 }
 
-.bubbleAssistant {
-  max-width: 80%;
-  white-space: pre-wrap;
-  word-break: break-word;
-  padding: 8px 12px;
-  border-radius: 10px;
-  background: #f1f5f9;
-  color: #271c11;
-  line-height: 1.5;
-}
-
+.bubbleAssistant,
 .bubbleUser {
   max-width: 80%;
   white-space: pre-wrap;
   word-break: break-word;
   padding: 8px 12px;
   border-radius: 10px;
-  background: #d49e8d;
-  color: #ffffff;
   line-height: 1.5;
 }
 
+.bubbleAssistant {
+  background: #f1f5f9;
+  color: #271c11;
+}
+
+.bubbleUser {
+  background: #d49e8d;
+  color: #ffffff;
+}
+
+/* ✅ 입력 폼 */
 .form {
   width: 100%;
-  max-width: 780px;
-  margin-top: 12px;
+  max-width: 900px;
   display: flex;
   gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap; /* 작은 화면에서 줄바꿈 */
 }
 
 .input {
@@ -212,6 +208,7 @@
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   outline: none;
+  min-width: 0; /* flex overflow 방지 */
 }
 
 .input:focus {
@@ -226,24 +223,20 @@
   background: #d49e8d;
   color: #ffffff;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
-.disabled {
+.button:disabled {
   background: #b8a894;
   cursor: not-allowed;
 }
 
-.tip {
-  font-size: 12px;
-  color: #8b7564;
-  margin-top: 8px;
-}
-
-/* 고정 저장 버튼 */
+/* ✅ 상단 고정 저장 버튼 */
 .saveBtnFixed {
-  position: absolute;
-  top: 16px;
-  right: 24px;
+  position: sticky; /* absolute → sticky */
+  top: 12px;
+  right: 0;
+  align-self: flex-end;
   background: #683b2b;
   color: #fff;
   border: none;
@@ -252,50 +245,17 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  z-index: 100;
+  z-index: 10;
 }
 
 .saveBtnFixed:hover {
   background: #aa7a6c;
 }
 
+/* ✅ 이미지 관련 */
 .chatImage {
-  max-width: 200px;
-  max-height: 200px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-}
-
-.previewBox {
-  margin-top: 8px;
-  text-align: center;
-}
-
-.previewImage {
-  max-width: 150px;
-  max-height: 150px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.attachBtn {
-  padding: 0 12px;
-  border-radius: 8px;
-  border: none;
-  background: #d49e8d;
-  color: #fff;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.attachBtn:hover {
-  background: #b97c6b;
-}
-
-.chatImage {
-  max-width: 200px;
-  max-height: 200px;
+  max-width: 100%;
+  height: auto;
   border-radius: 8px;
   border: 1px solid #ddd;
   margin-top: 4px;
@@ -307,8 +267,91 @@
 }
 
 .previewImage {
+  width: 100%;
   max-width: 150px;
-  max-height: 150px;
+  height: auto;
   border-radius: 6px;
   border: 1px solid #ccc;
+}
+
+/* ✅ 첨부 버튼 */
+.attachBtn {
+  padding: 0 12px;
+  border-radius: 8px;
+  border: none;
+  background: #d49e8d;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.attachBtn:hover {
+  background: #b97c6b;
+}
+
+/* -------------------- 모바일 대응 -------------------- */
+@media (max-width: 768px) {
+  .chat {
+    padding: 16px;
+  }
+
+  .chatBox {
+    height: 65vh;
+    padding: 12px;
+  }
+
+  .bubbleAssistant,
+  .bubbleUser {
+    max-width: 90%;
+    font-size: 15px;
+  }
+
+  .form {
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .button {
+    flex-shrink: 0;
+    padding: 10px 12px;
+  }
+
+  .input {
+    font-size: 15px;
+  }
+
+  .saveBtnFixed {
+    position: sticky;
+    top: 10px;
+    right: 0;
+    margin-bottom: 10px;
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chatBox {
+    height: 60vh;
+  }
+
+  .form {
+    flex-direction: column;
+  }
+
+  .input {
+    width: 100%;
+  }
+
+  .button,
+  .attachBtn {
+    width: 100%;
+  }
+
+  .saveBtnFixed {
+    width: 100%;
+    text-align: center;
+  }
 }
