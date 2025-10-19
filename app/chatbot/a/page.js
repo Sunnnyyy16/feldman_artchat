@@ -5,11 +5,11 @@ import { getHistoryById, saveHistory } from '../../lib/db';
 import styles from '../chatbot.module.css';
 
 const fixedFlow = [
-  "안녕하세요! 펠드만 비평(설명→분석→해석→판단)으로 감상을 이제부터 시작해볼게요. 가장 먼저 작품을 한 문장으로 묘사해 주세요.",
-  "분석 단계입니다. 작품을 분석해 보세요.",
-  "이제 해석 단계입니다. 작품을 해석해 보세요.",
-  "마지막 단계! 답변을 바탕으로 판단해 보세요.",
-  "고생하셨습니다, 이제 챗봇 사용 경험에 대해 연구원의 질문에 따라 알려주시면 됩니다. "
+  "안녕하세요! 펠드만 비평(설명→분석→해석→판단)으로 작품 감상을 시작해볼게요. 가장 먼저 1단계, 묘사(Description)입니다. 연구원에게 안내받은 작품을 한 문장으로 묘사해 주세요.",
+  "2단계, 분석(Analysis) 단계입니다. 작품을 분석해 보세요.",
+  "3단계, 해석(Interpretation) 단계입니다. 작품을 해석해 보세요.",
+  "마지막! 4단계, 판단(Judgement) 단계입니다. 지금까지의 답변을 바탕으로 작품에 대해 판단해 보세요.",
+  "고생하셨습니다, 이제 챗봇 사용 경험에 대해 연구원이 몇가지 질문드릴 건데 답해주시면 됩니다. "
 ];
 
 export default function ChatbotA() {
@@ -59,7 +59,7 @@ export default function ChatbotA() {
 
   return (
     <main className={styles.chat} style={{ position: 'relative' }}>
-      <h1 className={styles.title}>A타입 챗봇</h1>
+      <h1 className={styles.title}>Type A Chatbot</h1>
   
       {/* ✅ 항상 오른쪽 상단에 보이는 버튼 */}
       <button onClick={handleSave} className={styles.saveBtnFixed}>

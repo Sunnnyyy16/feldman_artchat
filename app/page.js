@@ -8,7 +8,7 @@ export default function Home() {
       <h1 className={styles.title}>Feldman ArtChat</h1>
       <p className={styles.description}>
         Edmund Feldman의 4단계 미술 비평 방법 
-        <br /> (설명 → 분석 → 해석 → 판단) 에 기반한
+        <br /> &quot;묘사(Description) → 분석(Analysis) → 해석(Interpretation) → 판단(Judgement)&quot; 에 기반한
         <br /> 작품 감상 도우미 챗봇
       </p>
 
@@ -17,10 +17,10 @@ export default function Home() {
         <p style={{ lineHeight: "1.6" }}>
           이제부터 Feldman 비평을 통해 작품을 감상해볼거에요. <br />
           작품을 감상할 때는 <strong>네 가지 단계</strong>를 거칩니다.<br />
-          <strong>① 기술</strong> – 작품에 보이는 것을 객관적으로 묘사<br />
-          <strong>② 분석</strong> – 색채·형태·구도의 관계 살펴보기<br />
-          <strong>③ 해석</strong> – 작가의 의도와 의미 추론<br />
-          <strong>④ 판단</strong> – 작품의 가치와 의미 평가
+          <strong>① 묘사(Description)</strong> – 작품에 보이는 것을 객관적으로 묘사<br />
+          <strong>② 분석(Analysis)</strong> – 색채·형태·구도의 관계 살펴보기<br />
+          <strong>③ 해석(Interpretation)</strong> – 작가의 의도와 의미 추론<br />
+          <strong>④ 판단(Judgement)</strong> – 작품의 가치와 의미 평가
         </p>
       </section>
 

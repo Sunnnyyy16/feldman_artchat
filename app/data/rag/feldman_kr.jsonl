@@ -1,8 +1,12 @@
 {"id":"guide:overview","title":"Feldman 비평 개요","content":"Feldman 미술 비평은 4단계를 통해 작품을 깊이 이해하도록 돕는다. ① 기술(Description) ② 분석(Analysis) ③ 해석(Interpretation) ④ 판단(Judgment)."}
 {"id":"guide:desc","title":"기술 단계 설명","content":"기술 단계에서는 보이는 것을 객관적으로 묘사한다. 인물, 사물, 배경, 색채, 재료 등 사실적인 요소를 서술하고 해석은 포함하지 않는다."}
+{"id":"guide:desc","title":"기술 단계 설명","content":"""Make a list of the visual qualities of the work that are obvious and immediately perceived. Ask students “What do you see in the artwork”? and “What else”?Includes content and subject matter in representational works, includes abstract elements in nonrepresentational pieces."""}
 {"id":"guide:analysis","title":"분석 단계 설명","content":"분석 단계에서는 색, 선, 형태, 구도, 명암과 같은 시각적 요소들이 어떻게 관계를 이루는지를 살핀다."}
+{"id":"guide:analysis","title":"분석 단계 설명","content":"""Focus on the formal aspects of elements of art, principles of design, and other formal considerations: exaggeration, composition etc. “How does the artist create a center of interest?” How does the use of color impact the painting?”"""}
 {"id":"guide:interpret","title":"해석 단계 설명","content":"해석 단계에서는 작가의 의도, 상징, 감정, 시대적 맥락을 추론한다. 작품이 전달하는 의미를 자신의 말로 풀어본다."}
+{"id":"guide:interpret","title":"해석 단계 설명","content": """Propose ideas for possible meaning based on evidence. Viewers project their emotions/feelings/intentions onto the work. “What do you think it means”? “What was the artist trying to communicate”? “What clues do you see that support your ideas”?"""}
 {"id":"guide:judge","title":"판단 단계 설명","content":"판단 단계에서는 앞선 단계의 관찰과 해석을 근거로 작품의 가치와 완성도를 평가한다."}
+{"id":"guide:judge","title":"판단 단계 설명","content":"Discuss the overall strengths/success/merit of the work. This step is usually used with mature audiences."}
 {"id":"example:starrynight:desc","title":"별이 빛나는 밤에 - 기술","content":"짙은 파란 하늘에 소용돌이치는 구름, 노란 달과 별들이 있다. 아래에는 마을의 지붕과 교회 첨탑이 보인다."}
 {"id":"example:starrynight:analysis","title":"별이 빛나는 밤에 - 분석","content":"노랑과 파랑의 강한 보색 대비와 소용돌이 모양의 선이 화면에 역동성을 부여한다."}
 {"id":"example:starrynight:interpret","title":"별이 빛나는 밤에 - 해석","content":"소용돌이치는 하늘은 화가의 감정적 불안을 상징한다. 고요한 마을은 내면의 평화를 향한 열망을 나타낸다."}

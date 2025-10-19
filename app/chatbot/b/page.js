@@ -9,7 +9,7 @@ export default function ChatbotB() {
       role: 'assistant',
       type: 'text',
       content:
-        '안녕하세요! 펠드만 비평(설명→분석→해석→판단)으로 감상을 도와드릴게요. 작품을 한 문장으로 묘사해 주시겠어요?',
+        "안녕하세요! 펠드만 비평(묘사→분석→해석→판단)으로 작품 감상을 도와드릴게요. 궁금한 게 있다면 언제든지 질문주세요! 가장 먼저 1단계(Description) 진행해볼게요. 연구원에게 안내받은 작품을 한 문장으로 묘사해 주시겠어요?"
     },
   ]);
   const [input, setInput] = useState('');
@@ -133,7 +133,7 @@ export default function ChatbotB() {
 
   return (
     <main className={styles.chat} style={{ position: 'relative' }}>
-      <h1 className={styles.title}>B타입 챗봇</h1>
+      <h1 className={styles.title}>Type B Chatbot</h1>
       <button onClick={handleSave} className={styles.saveBtnFixed}>
         채팅 기록 저장
       </button>
