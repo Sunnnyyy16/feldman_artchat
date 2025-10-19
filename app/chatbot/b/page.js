@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react';
 import { saveHistory } from '../../lib/db';
 import styles from '../chatbot.module.css';
+import Image from "next/image";
 
 export default function ChatbotB() {
   const [messages, setMessages] = useState([
@@ -14,10 +15,9 @@ export default function ChatbotB() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState(null); // base64 저장
+  const [image, setImage] = useState(null);
   const listRef = useRef(null);
 
-  // ✅ 파일을 base64 Data URL로 변환
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -30,7 +30,6 @@ export default function ChatbotB() {
     e.preventDefault();
     if (!input.trim() && !image) return;
 
-    // ✅ 텍스트+이미지 하나의 메시지로 합치기
     const contentArr = [];
     if (input.trim()) {
       contentArr.push({ type: 'text', text: input.trim() });
@@ -41,7 +40,6 @@ export default function ChatbotB() {
 
     const userMsg = { role: 'user', type: 'mixed', content: contentArr };
 
-    // state에 반영
     setMessages((prev) => [...prev, userMsg, { role: 'assistant', type: 'text', content: '' }]);
     setInput('');
     setImage(null);
@@ -101,11 +99,9 @@ export default function ChatbotB() {
   const handleSave = async () => {
     await saveHistory('B타입 대화', messages, 'b');
 
-    // 🔹 TXT 파일 다운로드 기능 추가
     const textContent = messages
       .map((m) => {
         if (Array.isArray(m.content)) {
-          // 텍스트+이미지 혼합 메시지
           return m.content
             .map((c) =>
               c.type === 'text'
@@ -114,7 +110,6 @@ export default function ChatbotB() {
             )
             .join('\n');
         } else {
-          // 일반 텍스트 메시지
           return `[${m.role}] ${m.content}`;
         }
       })
@@ -144,24 +139,31 @@ export default function ChatbotB() {
             key={i}
             className={`${styles.messageRow} ${m.role === 'user' ? styles.right : styles.left}`}
           >
-            {/* ✅ 혼합 메시지 처리 */}
             {Array.isArray(m.content) ? (
               <div className={m.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant}>
                 {m.content.map((c, j) =>
                   c.type === 'text' ? (
                     <p key={j}>{c.text}</p>
                   ) : (
-                    <img
+                    <Image
                       key={j}
                       src={c.image_url.url}
                       alt="첨부 이미지"
+                      width={300}
+                      height={200}
                       className={styles.chatImage}
                     />
                   )
                 )}
               </div>
             ) : m.type === 'image' ? (
-              <img src={m.content} alt="첨부 이미지" className={styles.chatImage} />
+              <Image
+                src={m.content}
+                alt="첨부 이미지"
+                width={300}
+                height={200}
+                className={styles.chatImage}
+              />
             ) : (
               <div className={m.role === 'user' ? styles.bubbleUser : styles.bubbleAssistant}>
                 {m.content}
@@ -171,7 +173,6 @@ export default function ChatbotB() {
         ))}
       </div>
 
-      {/* ✅ 입력 폼: + 버튼으로 파일 첨부 */}
       <form onSubmit={send} className={styles.form}>
         <input
           id="fileInput"
@@ -202,11 +203,16 @@ export default function ChatbotB() {
         </button>
       </form>
 
-      {/* ✅ 이미지 미리보기 */}
       {image && (
         <div className={styles.previewBox}>
           <p>첨부된 이미지:</p>
-          <img src={image} alt="미리보기" className={styles.previewImage} />
+          <Image
+            src={image}
+            alt="미리보기"
+            width={300}
+            height={200}
+            className={styles.previewImage}
+          />
         </div>
       )}
     </main>
