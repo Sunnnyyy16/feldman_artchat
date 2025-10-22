@@ -1,17 +1,22 @@
 {
-    "dataset_name": "FeldmanRAG-DCCP",
-    "version": "1.0",
-    "language": "English",
-    "source_dataset": "Deep Photo Critique Captioning (DCCP)",
-    "generation_model": "GPT-4o-mini (4-step regeneration)",
-    "embedding_model": "text-embedding-3-small",
-    "structure": {
-      "artists": "Biographical and stylistic information for major artists.",
-      "artworks": "Factual metadata for each artwork including title, year, medium, and theme.",
-      "critiques": "Stage-based reasoning guides and regenerated critique corpus (DCCP-based).",
-      "embeddings": "Vector representations for retrieval tasks.",
-      "metadata": "Documentation for dataset structure and reproducibility."
-    },
-    "created_at": "2025-10-15"
+  "dataset_name": "FeldmanRAG-DCCP",
+  "version": "1.0",
+  "created_at": "2025-10-15",
+  "language": "English",
+  "source_dataset": "Deep Photo Critique Captioning (DCCP)",
+  "generation_model": "GPT-4o-mini (4-step regeneration)",
+  "embedding_model": "text-embedding-3-small",
+  "total_comments": 1000,
+  "total_embeddings": 4000,
+  "structure": {
+    "artists": "Artist-level biographical data in JSONL format.",
+    "artworks": "Artwork-level factual metadata (title, year, medium, themes).",
+    "critiques": "Feldman reasoning guides + regenerated DCCP 4-step corpus.",
+    "embeddings": "Precomputed vector representations for RAG retrieval.",
+    "metadata": "Dataset description, field definitions, and version control files."
+  },
+  "used_in_experiment": {
+    "focus_artist": "Dorothea Tanning",
+    "focus_artwork": "A Little Night Music (1943)"
   }
-  
+}

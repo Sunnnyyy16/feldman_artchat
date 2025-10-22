@@ -1,7 +1,18 @@
 {
-    "total_artworks": 5,
-    "artists": ["Dorothea Tanning", "René Magritte"],
-    "time_period": "Modern / Surrealism",
-    "usage_in_experiment": "Used as stimuli in user study for Feldman ArtChat evaluation."
-  }
+  "total_artists": 2,
+  "artists": ["Dorothea Tanning", "René Magritte"],
+  "total_artworks": 5,
+  "experiment_focus": {
+    "artist": "Dorothea Tanning",
+    "artwork": "A Little Night Music (1943)"
+  },
+  "included_artworks": [
+    "Dorothea Tanning - Birthday (1942)",
+    "Dorothea Tanning - Children's Games (1942)",
+    "Dorothea Tanning - Eine kleine Nachtmusik, A Little Night Music (1943)",
+    "René Magritte - The Treachery of Images (1929)",
+    "René Magritte - The Son of Man (1964)"
+  ]
+}
+
   
