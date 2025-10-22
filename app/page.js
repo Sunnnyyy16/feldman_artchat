@@ -16,11 +16,13 @@ export default function Home() {
       <section style={{ margin: "2rem 0", textAlign: "center" }}>
         <p style={{ lineHeight: "1.6" }}>
           이제부터 Feldman 비평을 통해 작품을 감상해볼거에요. <br />
-          작품을 감상할 때는 <strong>네 가지 단계</strong>를 거칩니다.<br />
+          작품을 감상할 때는 <strong>4 가지 단계</strong>를 거칩니다.<br />
           <strong>① 묘사(Description)</strong> – 작품에 보이는 것을 객관적으로 묘사<br />
           <strong>② 분석(Analysis)</strong> – 색채·형태·구도의 관계 살펴보기<br />
           <strong>③ 해석(Interpretation)</strong> – 작가의 의도와 의미 추론<br />
           <strong>④ 판단(Judgement)</strong> – 작품의 가치와 의미 평가
+
+          연구원에 안내에 따라 아래 2가지 Type 중 1개를 선택해주세요. 
         </p>
       </section>
 
