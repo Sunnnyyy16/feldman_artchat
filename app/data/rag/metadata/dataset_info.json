@@ -6,8 +6,8 @@
   "source_dataset": "Deep Photo Critique Captioning (DCCP)",
   "generation_model": "GPT-4o-mini (4-step regeneration)",
   "embedding_model": "text-embedding-3-small",
-  "total_comments": 500,
-  "total_embeddings": 2000,
+  "total_comments": 300,
+  "total_embeddings": 1200,
   "structure": {
     "artists": "Artist-level biographical data in JSONL format.",
     "artworks": "Artwork-level factual metadata (title, year, medium, themes).",
