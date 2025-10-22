@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output:'export',
-    basePath: '/feldman_artchat',
-};
-
-export default nextConfig;
+    images: { unoptimized: true }, // optional
+    eslint: { ignoreDuringBuilds: true }, // optional
+  };
+  
+  module.exports = nextConfig;
+  
