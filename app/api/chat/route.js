@@ -1,15 +1,15 @@
-export const runtime = 'nodejs'; // Edge Runtime (스트리밍용)
+export const runtime = 'nodejs'; // Node.js 환경 (스트리밍 지원)
 
 import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
 
-// OpenAI 초기화
+// ---- OpenAI 초기화 ----
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// ----- Feldman 기본 안내 프롬프트 -----
+// ---- Feldman 기본 안내 프롬프트 ----
 const systemPrompt = `
 You are a helpful museum docent guiding users through Edmund Feldman's 4-step art critique.
 Steps:
@@ -21,12 +21,17 @@ Steps:
 사용자가 각 단계에 성실히 답하면, 다음 단계로 자연스럽게 넘어가세요.
 `;
 
-// ----- RAG 설정 -----
-const DATA_PATH = path.join(process.cwd(), "data/rag/feldman_kr_vectors.json");
+// ---- RAG 데이터 경로 (embedding vectors) ----
+const DATA_PATH = path.join(
+  process.cwd(),
+  "app/data/rag/embeddings/critiques/dccp_feldman_4step_vectors.json"
+);
 
-// 간단한 코사인 유사도 계산
+// ---- 코사인 유사도 계산 ----
 function cosineSim(a, b) {
-  let dot = 0, na = 0, nb = 0;
+  let dot = 0,
+    na = 0,
+    nb = 0;
   for (let i = 0; i < a.length; i++) {
     dot += a[i] * b[i];
     na += a[i] * a[i];
@@ -35,13 +40,13 @@ function cosineSim(a, b) {
   return dot / (Math.sqrt(na) * Math.sqrt(nb));
 }
 
-// 질문 감지 함수
+// ---- 질문 감지 ----
 function isQuestion(text) {
   const qTriggers = ["?", "어떻게", "왜", "무엇", "알려줘", "뭐야", "설명"];
   return qTriggers.some((kw) => text.includes(kw));
 }
 
-// RAG 문서 로드
+// ---- RAG 문서 로드 ----
 let DOCS = null;
 function loadDocs() {
   if (!DOCS) {
@@ -50,26 +55,32 @@ function loadDocs() {
   return DOCS;
 }
 
-// RAG 검색 함수
+// ---- RAG 검색 함수 ----
 async function retrieveContext(question) {
   const docs = loadDocs();
 
-  // 1) 질문 임베딩 생성
+  // 1️⃣ 질문 임베딩 생성
   const embRes = await openai.embeddings.create({
-    model: "text-embedding-3-large",
+    model: "text-embedding-3-small",
     input: question,
   });
   const qvec = embRes.data[0].embedding;
 
-  // 2) 코사인 유사도 기반 상위 5개 선택
+  // 2️⃣ 코사인 유사도 기반 상위 5개 선택
   const top = docs
-    .map((d) => ({ ...d, score: cosineSim(qvec, d.vector) }))
+    .map((d) => ({
+      ...d,
+      score: cosineSim(qvec, d.embedding), // ✅ 필드명 맞춤 (d.vector → d.embedding)
+    }))
     .sort((a, b) => b.score - a.score)
     .slice(0, 5);
 
-  // 3) 컨텍스트 문자열 구성
+  // 3️⃣ 참고 문맥 구성
   const context = top
-    .map((d, i) => `【${i + 1}】${d.title}\n${d.content}`)
+    .map(
+      (d, i) =>
+        `【${i + 1}】(${d.stage.toUpperCase()}) ${d.text}`
+    )
     .join("\n\n");
 
   return context;
@@ -79,12 +90,24 @@ async function retrieveContext(question) {
 export async function POST(req) {
   try {
     const { messages = [] } = await req.json();
-    const lastUserMessage = messages[messages.length - 1]?.content || "";
 
-    let systemMessage = systemPrompt; // 기본 프롬프트
+    // ✅ 마지막 유저 메시지 content 처리 (문자열 or 배열 모두 대응)
+    let lastUserMessage = "";
+    const last = messages[messages.length - 1];
+    if (Array.isArray(last?.content)) {
+      lastUserMessage = last.content
+        .map((c) => (typeof c.text === "string" ? c.text : ""))
+        .join(" ")
+        .trim();
+    } else {
+      lastUserMessage = last?.content || "";
+    }
+
+    // ---- 프롬프트 초기화 ----
+    let systemMessage = systemPrompt;
     let finalMessages = [];
 
-    // 🎯 사용자가 질문한 경우 → RAG 검색 기반 프롬프트로 교체
+    // 🎯 질문인 경우 → RAG 기반 프롬프트 구성
     if (isQuestion(lastUserMessage)) {
       const context = await retrieveContext(lastUserMessage);
       systemMessage = `
@@ -96,14 +119,14 @@ export async function POST(req) {
 
 참고자료:
 ${context}
-`;
+      `;
       finalMessages = [{ role: "system", content: systemMessage }];
     } else {
-      // 일반 대화 흐름 (Feldman 단계 안내)
+      // ---- 일반 대화 흐름 (단계 안내)
       finalMessages = [{ role: "system", content: systemPrompt }, ...messages];
     }
 
-    // 🔄 OpenAI Chat Completions (스트리밍)
+    // ---- GPT 스트리밍 응답 ----
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       stream: true,
@@ -128,6 +151,7 @@ ${context}
       },
     });
 
+    // ---- 스트리밍 Response 반환 ----
     return new Response(stream, {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
@@ -135,6 +159,7 @@ ${context}
       },
     });
   } catch (e) {
+    console.error("❌ RAG/Chat Error:", e);
     return new Response(`Error: ${e.message}`, { status: 500 });
   }
 }
