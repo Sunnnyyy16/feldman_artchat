@@ -1,0 +1,22 @@
+{
+    "dccp_feldman_4step.jsonl": {
+      "image_id": "Unique ID or filename from the DCCP dataset.",
+      "original_comment": "Raw comment text before Feldman regeneration.",
+      "description": "Objective statement describing visible content.",
+      "analysis": "Discussion of visual relationships (composition, color, contrast).",
+      "interpretation": "Explanation of conveyed meaning or emotion.",
+      "judgment": "Evaluative conclusion based on the previous stages."
+    },
+    "tanning_eine_kleine_nachtmusik_meta.jsonl": {
+      "artwork_id": "Unique artwork identifier.",
+      "artist_id": "Associated artist identifier.",
+      "title": "Official artwork title.",
+      "year": "Production year.",
+      "medium": "Material or technique used.",
+      "themes": "List of key visual or conceptual themes.",
+      "description": "Concise factual overview of the artwork.",
+      "artist_statement": "Quotes from the artist about this work.",
+      "interpretation_summary": "Key interpretive points derived from the artist and critics."
+    }
+  }
+  

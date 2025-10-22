@@ -1,0 +1,17 @@
+{
+    "dataset_name": "FeldmanRAG-DCCP",
+    "version": "1.0",
+    "language": "English",
+    "source_dataset": "Deep Photo Critique Captioning (DCCP)",
+    "generation_model": "GPT-4o-mini (4-step regeneration)",
+    "embedding_model": "text-embedding-3-small",
+    "structure": {
+      "artists": "Biographical and stylistic information for major artists.",
+      "artworks": "Factual metadata for each artwork including title, year, medium, and theme.",
+      "critiques": "Stage-based reasoning guides and regenerated critique corpus (DCCP-based).",
+      "embeddings": "Vector representations for retrieval tasks.",
+      "metadata": "Documentation for dataset structure and reproducibility."
+    },
+    "created_at": "2025-10-15"
+  }
+  
